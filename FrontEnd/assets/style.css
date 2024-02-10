@@ -52,6 +52,7 @@ body {
 	margin:auto;
 	font-family: 'Work Sans' ;
 	font-size: 14px;
+	background-color: #FFFEF8;
 }
 header {
 	display: flex;
@@ -68,6 +69,10 @@ h1{
 	font-family: 'Syne';
 	font-size: 22px;
 	font-weight: 800;
+	color: #B1663C
+}
+
+h1 a {
 	color: #B1663C
 }
 
@@ -94,6 +99,11 @@ nav li {
 	padding: 0 10px;
 	font-size: 1.2em;
 }
+
+a {
+	text-decoration: none;
+	color: black;
+  }
 
 li:hover {
 	color: #B1663C;
@@ -125,6 +135,24 @@ li:hover {
 	text-align: center;
 	margin-bottom: 1em;
 }
+
+.filter {
+	display: flex;
+	justify-content: center;
+	gap: 15px;
+	margin-bottom: 2em;
+}
+
+.filter button {
+	color: #1D6154;
+	background-color: #FFFEF8;
+	border: 1px #1D6154 solid;
+	border-radius: 60px;
+	size: 16px;
+	font-family: 'Syne';
+	padding: 5px 10px;
+}
+
 .gallery {
 	width: 100%;
 	display: grid;
@@ -137,10 +165,17 @@ li:hover {
 	width: 100%;
 
 }
+
 #contact {
 	width: 50%;
-margin: auto;
+	margin: auto;
 }
+
+.padding-contact {
+	padding-top: 80px;
+	padding-bottom: 230px;
+}
+
 #contact > * {
 	text-align: center;
 
@@ -148,6 +183,7 @@ margin: auto;
 #contact h2{
 	margin-bottom: 20px;
 }
+
 #contact form {
 	text-align: left;
 	margin-top:30px;
@@ -180,9 +216,16 @@ input[type="submit"]{
 	border-radius: 60px ;
 }
 
-footer nav ul {
+footer {
+	background-color: white;
+}
+
+footer nav {
 	display: flex;
 	justify-content: flex-end;
+}
+
+footer nav ul {
 	margin: 2em
 }
 
