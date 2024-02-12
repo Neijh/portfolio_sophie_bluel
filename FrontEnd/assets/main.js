@@ -1,6 +1,16 @@
-//retrieve the architect's projects with the API
+import { addListenerSendLogin } from "./login.js"
+
+//Recover admin login possibly stored in localStorage
+let adminUser = window.localStorage.getItem("token")
+
+if (adminUser === null) {
+
+}
+addListenerSendLogin()
+//get the architect's projects with the API
 const answer = await fetch("http://localhost:5678/api/works")
 const projects = await answer.json()
+
 
 //show all projects by API
 function generateProjects(projects) {
@@ -110,3 +120,4 @@ const filterCategory = () => {
 }
             
 filterCategory()
+
