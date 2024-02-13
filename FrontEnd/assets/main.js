@@ -7,6 +7,7 @@ if (adminUser === null) {
 
 }
 addListenerSendLogin()
+
 //get the architect's projects with the API
 const answer = await fetch("http://localhost:5678/api/works")
 const projects = await answer.json()
@@ -57,14 +58,8 @@ const generateFilterButtons = () => {
         const newButton = document.createElement("button")
         newButton.innerText = name
         newButton.setAttribute("class", "filter-btn")
-        // const findId = projects.find(project => {
-        //     if (project.category.name === name) {
-        //         return project.category.id
-        //     }
-        // })
         newButton.setAttribute("data-id", `${i}`)
        
-        // newButton.setAttribute("data-id", findId)
         filter.appendChild(newButton)
 
         i++

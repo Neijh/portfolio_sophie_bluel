@@ -1,7 +1,7 @@
 export function addListenerSendLogin() {
     //select the form and add a event listener
     const loginForm = document.querySelector(".login-form")
-
+    console.log("LoginForm:", loginForm)
     loginForm.addEventListener("submit", async function (event) {
         event.preventDefault()
 
@@ -29,9 +29,8 @@ export function addListenerSendLogin() {
         
         //condition to login the user
         if (response.ok) {
-            window.localStorage.setItem("token", JSON.stringify(data.token))
+            window.localStorage.setItem("token", JSON.stringify(data))
             window.location.href = "./index.html"
-            window.localStorage.removeItem("token")
         } else {
             alert("user not found")
         }
