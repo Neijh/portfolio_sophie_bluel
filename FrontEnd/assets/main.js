@@ -1,13 +1,3 @@
-import { addListenerSendLogin } from "./login.js"
-
-//Recover admin login possibly stored in localStorage
-let adminUser = window.localStorage.getItem("token")
-
-if (adminUser === null) {
-
-}
-addListenerSendLogin()
-
 //get the architect's projects with the API
 const answer = await fetch("http://localhost:5678/api/works")
 const projects = await answer.json()
@@ -18,7 +8,7 @@ function generateProjects(projects) {
     for (let i = 0; i < projects.length; i++) {
         const image = projects[i].imageUrl
         const title = projects[i].title
-    
+        
         //create tags and elements intended for the gallery
         const gallery = document.querySelector(".gallery")
         const figure = document.createElement("figure")
@@ -26,7 +16,7 @@ function generateProjects(projects) {
         imageElement.src = image
         const figCaption = document.createElement("figcaption")
         figCaption.innerText = title
-    
+        
         //add to the gallery the architect's work
         gallery.appendChild(figure)
         figure.appendChild(imageElement)
@@ -51,17 +41,17 @@ const getCategoryNames = () => {
 const generateFilterButtons = () => {
     const filter = document.querySelector(".filter")
     const categoryNames = getCategoryNames()
-
+    
     let i = 0
-
+    
     for (let name of categoryNames) {
         const newButton = document.createElement("button")
         newButton.innerText = name
         newButton.setAttribute("class", "filter-btn")
         newButton.setAttribute("data-id", `${i}`)
-       
+        
         filter.appendChild(newButton)
-
+        
         i++
     }
 }
@@ -81,38 +71,38 @@ const filterCategory = () => {
                     document.querySelector(".gallery").innerHTML = ""
                     generateProjects(keepAll)
                     break
-                case 1 :
-                    const keepObjects = projects.filter(project => {
-                        return project.categoryId === parseInt(buttonId)
-                    })
-                    document.querySelector(".gallery").innerHTML = ""
-                    generateProjects(keepObjects)
-                    break
-                case 2 :
-                    const keepAppartment = projects.filter(project => {
-                        if (project.categoryId === 2) {
-                            return project
+                    case 1 :
+                        const keepObjects = projects.filter(project => {
+                            return project.categoryId === parseInt(buttonId)
+                        })
+                        document.querySelector(".gallery").innerHTML = ""
+                        generateProjects(keepObjects)
+                        break
+                        case 2 :
+                            const keepAppartment = projects.filter(project => {
+                                if (project.categoryId === 2) {
+                                    return project
                         }
                     })
                     document.querySelector(".gallery").innerHTML = ""
                     generateProjects(keepAppartment)
                     break
-                case 3 :
-                    const keepHotel = projects.filter(project => {
-                        if (project.categoryId === 3) {
-                            return project
-                        }
-                    })
+                    case 3 :
+                        const keepHotel = projects.filter(project => {
+                            if (project.categoryId === 3) {
+                                return project
+                            }
+                        })
                     document.querySelector(".gallery").innerHTML = ""
                     generateProjects(keepHotel)
                     break
-                default :
+                    default :
                     console.log("Press a category")
-            }
+                }
         })
     })
-
+    
 }
-            
+
 filterCategory()
 
