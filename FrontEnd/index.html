@@ -10,8 +10,9 @@
 		<meta name="description" content="">
 		<link rel="stylesheet" href="./assets/style.css">
 		<script src="https://kit.fontawesome.com/05bd8f82e6.js" crossorigin="anonymous"></script>
-		<script type="module" src="./assets/main.js" defer></script>
-		<script type="module" src="./assets/admin.js" defer></script>
+		<script type="module" src="./assets/script/config.js" defer></script>
+		<script type="module" src="./assets/script/main.js" defer></script>
+		<script type="module" src="./assets/script/script.js" defer></script>
 	</head>
 	<body>
 		<div class="admin-tools banner">
@@ -44,10 +45,42 @@
 	</section>
 	<section id="portfolio">
 		<div >
-			<!-- <div class="edition-tools"> -->
-			<!-- </div> -->
-			<h2>Mes Projets <a class="admin-tools edit-projects"><i class="fa-regular fa-pen-to-square"></i>modifier</a></h2>
-			
+			<h2>
+				Mes Projets
+				<a href="#modal1" class="js-modal edit-projects"><i class="fa-regular fa-pen-to-square"></i>modifier</a>
+			</h2>
+			<aside id="modal1" class="modal" aria-hidden="true" role="dialog" aria-labelledby="title-modal" style="display: none;">
+				<div class="modal-wrapper js-modal-stop">
+					<div class="top-container">
+						<i class="fa-solid fa-arrow-left toggle"></i>
+						<button class="close-btn js-modal-close"><i class="fa-solid fa-xmark"></i></button>
+					</div>
+					<h3 class="title-modal">Galerie photo</h3>
+					<div class="modal-gallery">
+						<div class="js-add-photos toggle">
+							<div class="preview-container">
+								<i class="fa-regular fa-image"></i>
+								<button>+ Ajouter Photo</button>
+								<p>jpg, png:4mo max</p>
+							</div>
+							<form action="#" class="modal-form"></form>
+							<label for="title">Titre</label>
+							<input type="text" id="title" name="title">
+							<label for="select-category">Catégorie</label>
+							<!-- <div class="category-container">  -->
+								<!-- <i class="fa-solid fa-chevron-down"></i> -->
+								<select id="select-category" name="category" class="category">
+									<option value=""><i class="fa-solid fa-chevron-down"></i></option>
+							<!-- </div> -->
+						</div>
+					</div>
+					<hr class="line">
+					<div class="div-btn">
+						<button class="add-btn">Ajouter une photo</button>
+						<button class="validate-button toggle">Valider</button>
+					</div>
+				</div>
+			</aside>
 		</div>
 		<div class="filter"></div>
 		<div class="gallery"></div>
