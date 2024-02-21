@@ -4,13 +4,14 @@
 //get the architect's projects with the API
 
 //Placeholder to store the fetched data from the API, initialized with null.
-let cachedData = null
+// let cachedData = null
 
 export async function fetchProjects() {
-    if (!cachedData) {
+    // if (!cachedData) {
         const response = await fetch("http://localhost:5678/api/works")
         const data = await response.json()
-        cachedData = data
-    }
-    return cachedData
+        // cachedData = data
+    // }
+    // return cachedData
+    return data
 }

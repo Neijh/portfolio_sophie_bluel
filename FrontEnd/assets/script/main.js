@@ -11,7 +11,7 @@ async function fetchDataAndGenerate() {
         const projects = await fetchProjects()
         // Call the generateProjects function and pass the fetched data directly
         generateProjects(projects)
-        // filterCategory()
+        filterCategory(projects)
         // addListenerSendLogin()
         // generateModalGallery(projects)
         // deleteProject()

@@ -61,7 +61,7 @@ const generateFilterButtons = () => {
 }
 
 //filter category
-export function filterCategory() {
+export function filterCategory(projects) {
     generateFilterButtons()
     const buttons = document.querySelectorAll(".filter-btn")
     buttons.forEach(button => {
@@ -149,7 +149,7 @@ export function addListenerSendLogin() {
 /**********************************************************
  3- Modal
  **********************************************************/
-const createModalGallery = (project) => {
+const createModalGallery = (projects) => {
     //create tags and elements intended for the modal
     const modalPhoto = document.querySelector(".modal-gallery")
         const figure = document.createElement("figure")
@@ -177,7 +177,7 @@ export const generateModalGallery = (projects) => {
         const image = projects[i].imageUrl
         const id = projects[i].id
 
-    createModalGallery(project)    
+    createModalGallery(projects)    
         
     }
 }
