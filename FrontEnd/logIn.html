@@ -9,41 +9,46 @@
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
-	<script type="module" src="./assets/main.js" defer></script>
-	<script type="module" src="./assets/login.js" defer></script>
+	<script type="module" src="./assets/script/config.js" defer></script>
+	<script type="module" src="./assets/script/main.js" defer></script>
+	<script type="module" src="./assets/script/script.js" defer></script>
+	<!-- <script type="module" src="./assets/script/backup.js" defer></script> -->
+
 </head>
 <body>
-	<header>
-		<h1 id="link-login"><a href="index.html#link-home">Sophie Bluel</a><span>Architecte d'intérieur</span></h1>
-		<nav>
-			<ul>
-				<li>projets</li>
-				<li>contact</li>
-				<li>login</li>
-				<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
-			</ul>
-		</nav>
-	</header>
-	<main>
-		<section id="login">
-			<h2>Log In</h2>
-			<form class="login-form">
-				<label for="email">E-mail</label>
-				<input type="email" name="email" id="email" required>
-				<label for="password">Mot de passe</label>
-				<input type="password" name="password" id="password" required>
-				<input type="submit" value="Se connecter" id="submit-form">
-			</form>
-			<p><a href="#" class="text-decoration">Mot de passe oublié</a></p>
-		</section>
-	</main>
-	
-	<footer>
-		<nav>
-			<ul>
-				<li>Mentions Légales</li>
-			</ul>
-		</nav>
-	</footer>
+	<div class="container">
+		<header>
+			<h1><a href="./index.html">Sophie Bluel</a><span>Architecte d'intérieur</span></h1>
+			<nav>
+				<ul>
+					<li>projets</li>
+					<li>contact</li>
+					<li>login</li>
+					<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
+				</ul>
+			</nav>
+		</header>
+		<main>
+			<section id="login">
+				<h2>Log In</h2>
+				<form class="login-form">
+					<label for="email">E-mail</label>
+					<input type="email" name="email" id="email" required>
+					<label for="password">Mot de passe</label>
+					<input type="password" name="password" id="password" required>
+					<input type="submit" value="Se connecter" id="submit-form">
+				</form>
+				<p><a href="#" class="text-decoration">Mot de passe oublié</a></p>
+			</section>
+		</main>
+	</div>
+		
+		<footer>
+			<nav>
+				<ul>
+					<li>Mentions Légales</li>
+				</ul>
+			</nav>
+		</footer>
 </body>
 </html>
