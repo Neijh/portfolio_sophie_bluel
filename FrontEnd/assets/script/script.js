@@ -326,20 +326,58 @@ export function deleteProject() {
 
 /////////////////////////////
 
-// export function addPhotos() {
-//     // const modalWrapper1 = document.querySelector(".modal-wrapper")
-//     const addButton = document.querySelector(".add-btn")
-//     //
-//     addButton.addEventListener("click", function () {
-//         //disable the gallery & change of content
-//         const modalGallery = document.querySelectorAll(".modal-gallery figure")
-//         modalGallery.forEach(figure => figure.style.display = "none")
-//         const title = document.querySelector(".title-modal")
-//         title.innerText = "Ajout Photo"
-//         //////////////
-//         const toggleElements = document.querySelectorAll(".toggle")
-//         toggleElements.forEach(element => element.style.display = "block")
-//         //////////////
-//         document.querySelector(".add-btn").style.display = "none"
-//     })
-// }
+const diplayNoneModal2 = () => {
+    const modalview2 = document.querySelectorAll(".js-modal-view2")
+    if (modalview2) {
+        modalview2.forEach(e => e.style.display = "none")
+    }
+}
+diplayNoneModal2()
+
+const backModalView1 = (modalGallery, title, toggleElements, addBtn) => {
+    document.querySelector(".fa-arrow-left").addEventListener("click", () => {
+        modalGallery.forEach(figure => figure.style.display = "flex")
+        title.innerText = "Galerie photo"
+        toggleElements.forEach(element => element.style.display = "none")
+        document.querySelector("#validate-button").style.display= "none"
+        addBtn.style.display = "flex"
+    })
+}
+export function addPhotosModal() {
+    // const modalWrapper1 = document.querySelector(".modal-wrapper")
+    const addButton = document.querySelector(".add-btn")
+    //
+    if (addButton) {
+
+        addButton.addEventListener("click", function () {
+            //disable the gallery & change of content
+            const modalGallery = document.querySelectorAll(".modal-gallery figure")
+            modalGallery.forEach(figure => figure.style.display = "none")
+            // change the title
+            const title = document.querySelector(".title-modal")
+            title.innerText = "Ajout photo"
+            //////////////
+            const toggleElements = document.querySelectorAll(".js-modal-view2")
+            toggleElements.forEach(element => element.style.display = "flex")
+            //////////////
+            const addBtn = document.querySelector(".div-btn")
+            addBtn.style.display = "none"
+
+            backModalView1(modalGallery, title, toggleElements, addBtn)
+        })
+    }
+}
+
+addPhotosModal()
+
+export function fillModalForm(projects) {
+    document.querySelector(".validate-button").addEventListener("submit", (event) => {
+        const formData = {
+            title : event.target.querySelector("[name=title].value"),
+            category : event.target.querySelector("[name=category].value")
+        }
+
+    })
+
+
+}
