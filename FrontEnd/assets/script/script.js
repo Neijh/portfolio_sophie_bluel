@@ -23,7 +23,6 @@ const createGallery = (image, title) => {
 
 // Loop through the projects stored in the api to retrieve them
 const generateProjects = (projects) => {
-    const gallery = document.querySelector(".gallery")
     for (let i = 0; i < projects.length; i++) {
         const image = projects[i].imageUrl
         const title = projects[i].title
@@ -46,6 +45,7 @@ const getCategoryNames = (projects) => {
 const generateFilterButtons = (projects) => {
     const filter = document.querySelector(".filter")
     const categoryNames = getCategoryNames(projects)
+    categoryNames.shift()
     
     let i = 0
     
@@ -369,15 +369,180 @@ export function addPhotosModal() {
 }
 
 addPhotosModal()
+//////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+
+
+const validFileType = (file) => {
+    const fileTypes = ["image/jpeg", "image/png"]
+    return fileTypes.includes(file.type)
+}
+
+const validFileSize = (file) => {
+    return file.size <= 4 * 1024 * 1024 // 4 mo?????
+}
+
+// Check if the form is correctly fill
+function checkImageUrl() {
+    const imageFile = document.querySelector("[name=img-file]")
+    console.log("Selected input element:", imageFile)
+
+    if (!imageFile || !imageFile.files || imageFile.files.length === 0) {
+        // No file input or no files selected
+        return
+    }
+    
+    // addPhoto.addEventListener("click", () => {
+        
+    // })
+    // Convert fileList (.files) to an array
+    const files = Array.from(imageFile.files)
+    console.log(files)
+        
+        // // Error message for not having completed the form
+        // if (files.length === 0) {
+        //     alert("Veuillez sélectionner un fichier")
+        //     return
+        // }
+        
+        // Get the first file from the array
+        const file = files[0]
+       
+        
+        if (!validFileType(file)) {
+            alert ("Le fichier doit être de type JPEG ou PNG")
+            return
+        }
+        
+        if (!validFileSize(file)) {
+            alert("La taille du fichier doit être de 4 Mo maximun")
+        return
+    }
+    
+    // If everything is valid, proceed with handling the file
+    const preview = document.querySelector(".preview")
+    // Clear previous content with a loop
+    while (preview.firstChild) {
+        preview.removeChild(preview.firstChild)
+    }
+    
+    
+    const figure = document.createElement("figure")
+    const newImage = document.createElement("img")
+    try {
+        newImage.src = URL.createObjectURL(file)
+        console.log("Image source:", newImage.src)
+    } catch (error) {
+        console.log("Errorcreating image URL:", error)
+        throw new Error("Failed to display image preview!")
+    }
+    newImage.alt = "preview-image"
+    // Clear the previous
+    // preview.innerHTML = ""
+    figure.appendChild(newImage)
+    preview.appendChild(figure)
+    // preview.appendChild(newImage)
+
+    
+
+//     // Add event listener to handle image loading errors
+//   newImage.addEventListener("error", () => {
+//     console.error("Image failed to load!")
+//     // Handle image loading error gracefully, display message or notify user
+//     throw new Error("Image preview failed to load!")
+//   })
+}
+// checkImageUrl()
+
+// Add event listener to image input for change event
+const imageInput = document.querySelector("[name=img-file]")
+imageInput.addEventListener("change", checkImageUrl)
+
+function validateTitleModalForm() {
+    const modalForm = document.querySelector(".modal-form")
+
+    const title = document.querySelector("[name=title]").value.trim()
+
+    const regex = new RegExp("[a-zA-Z\s\-“”]+")
+
+    let validationTitre = regex.test(titre)
+    if (validationTitre === true) {
+        console.log(title)
+        return title
+    } else {
+        console.log("Attention certains caractères ne sont pas autorisés")
+    }
+}
+
+function validateModalForm() {
+    const imageOk = checkImageUrl()
+    const titleOk = validateTitleModalForm()
+    if (imageOk && titleOk) {
+        return
+    }
+}
+
+export function categoriesForm(projects) {
+    const categories = getCategoryNames(projects)
+    categories.shift()
+    console.log(categories)
+    const selectCategories = document.querySelector("[name=category]")
+
+    let i = 0
+    for (let category of categories) {
+        const option = document.createElement("option")
+        option.innerText = category
+        option.setAttribute("value", category.value)
+        selectCategories.appendChild(option)
+        i++
+    }
+}
+
+// export function generateCategoriesForm(categories) {
+//     const selectCategories = document.querySelector("[name=category]")
+
+//     for (let i = 0; i < categories.length; i++) {
+//         const category = categories[i].name
+//         const option = document.createElement("option")
+//         option.innerText = category
+//         option.setAttribute("value", category)
+//         selectCategories.appendChild(option)
+
+//     }
+// }
 
 export function fillModalForm(projects) {
-    document.querySelector(".validate-button").addEventListener("submit", (event) => {
-        const formData = {
-            title : event.target.querySelector("[name=title].value"),
-            category : event.target.querySelector("[name=category].value")
-        }
-
-    })
-
-
+    checkImageUrl()
+    validateTitleModalForm()
+    categoriesForm(projects)
 }
+
+// export async function postFormData(event) {
+//     event.preventDefault()
+
+//     Get the form element & create a new form data
+//     var modalForm = document.querySelector(".modal-form")
+//     var formData = new FormData(modalForm)
+
+//     try {
+//         // Make a POST request to the API endpoint
+//         const response = await fetch("http://localhost:5678/api/users/works", {
+//             method: "POST",
+//             body: formData
+//         })
+
+//         wait for the response
+//         const formReturn = await response.json()
+        
+//         condition to login the user
+//         if (response.ok) {
+//             store the token locally and redirect
+//             return formReturn
+//         } else {
+//             throw new Error("Erreur dans les données")
+//         }
+//     } catch (error) {
+//         console.error("Error:", error)
+//     }
+// }
+// postFormData(event)

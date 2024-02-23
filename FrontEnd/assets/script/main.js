@@ -2,8 +2,20 @@
 // initializes and launches the main final function //
 ///////////////////////////////////////////////////////////////////////////
 
-import { fetchProjects } from "./config.js"
-import { generateAndFilter, addListenerSendLogin, logAdminOut, toggleModal, generateModalGallery, deleteProject } from "./script.js"
+import { fetchProjects, fetchCategories } from "./config.js"
+import { generateAndFilter, addListenerSendLogin, logAdminOut, toggleModal, generateModalGallery, deleteProject  } from "./script.js"
+
+// async function fetchAndGenerateCategories() {
+//     try {
+//         const categories = await fetchCategories()
+//         if (categories) {
+//             generateCategoriesForm(categories)
+//         }
+//     } catch (error) {
+//         console.error("An Error occured while fetching the categories")
+//     }
+// }
+// fetchAndGenerateCategories()
 
 // Fetch the data using the fetchProjects function
 async function fetchDataAndGenerate() {
@@ -17,6 +29,10 @@ async function fetchDataAndGenerate() {
             toggleModal()
             generateModalGallery(projects)
             deleteProject()
+            // checkImageUrl()
+
+            // fillModalForm(projects)
+            
         }
         // addPhotos()
     } catch (error) {
@@ -26,3 +42,7 @@ async function fetchDataAndGenerate() {
 
 // Call the function to initiate the data fetching
 fetchDataAndGenerate()
+
+
+// postFormData(event)
+

@@ -75,19 +75,20 @@
 						</div>
 						<h3 class="title-modal">Galerie photo</h3>
 						<div class="modal-gallery">
-							<form class="modal-form js-modal-view2">
+							<form enctype="multipart/form-data" class="modal-form js-modal-view2" method="post">
 								<div class="preview-container js-modal-view2">
+									<div class="preview"></div>
 									<i class="fa-regular fa-image"></i>
-									<input type="file" id="img-file" class="img-file">
+									<input type="file" id="img-file" name="img-file" class="img-file" accept=".jpg, .png" required>
 									<label for="img-file">+ Ajouter Photo</label>
 									<p>jpg, png:4mo max</p>
 								</div>
 								<label for="title" class="m-form-label">Titre</label>
-								<input type="text" id="title" name="title" class="form-input">
+								<input type="text" id="title" name="title" class="form-input" required>
 								<label for="select-category" class="m-form-label">Catégorie</label>
 								<div class="chevron">
 									<i class="fa-solid fa-chevron-down"></i>
-									<select id="select-category" name="category" class="category form-input">
+									<select id="select-category" name="category" class="category form-input" required>
 										<option value=""></option>
 									</select>
 								</div>
