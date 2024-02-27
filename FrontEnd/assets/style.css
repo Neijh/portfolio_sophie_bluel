@@ -470,6 +470,10 @@ footer nav ul {
 	height: 100%;
 }
 
+.label-hidden {
+	visibility: hidden;
+}
+
 .fa-image {
 	font-size: 60px;
 	color: #B9C5CC;

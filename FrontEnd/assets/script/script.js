@@ -45,7 +45,6 @@ const getCategoryNames = (projects) => {
 const generateFilterButtons = (projects) => {
     const filter = document.querySelector(".filter")
     const categoryNames = getCategoryNames(projects)
-    categoryNames.shift()
     
     let i = 0
     
@@ -265,7 +264,7 @@ const createModalGallery = (image, id) => {
         // trashContainer.setAttribute("data-id", projects[i].id)
         trashContainer.setAttribute("data-id", id)
 
-        // console.log(trashContainer.dataset.id)
+        console.log(trashContainer.dataset.id)
 
         const trash = document.createElement("i")
         trash.classList.add("fa-solid", "fa-trash-can")
@@ -277,7 +276,7 @@ const createModalGallery = (image, id) => {
         trashContainer.appendChild(trash)
     }
 }
- 
+
 
 //delete project in the gallery 
 export function deleteProject() {
@@ -288,12 +287,24 @@ export function deleteProject() {
     if (tokenItem) {
         token = JSON.parse(tokenItem).token
     }
-    const trashIcons = document.querySelectorAll(".trash-container")
+    /////////////////////////////////////////////////////////////////////////
+    // const trashIcons = document.querySelectorAll(".trash-container")
     
-    // Loop through the trash icons to know with project to deleted with the id
-    trashIcons.forEach(trash => {
-        trash.addEventListener("click", async function () {
-            const projectId = this.parentElement.dataset.id
+    // // Loop through the trash icons to know with project to deleted with the id
+    // trashIcons.forEach(trash => {
+    //     trash.addEventListener("click", async function () {
+    //         const projectId = this.parentElement.dataset.id
+    /////////////////////////////////////////////////////////////////////////
+    const galleryContainer = document.querySelector(".modal-gallery");
+    if (!galleryContainer) return; // Exit early if the gallery container doesn't exist
+
+    // Add a single click event listener to the gallery container
+    galleryContainer.addEventListener("click", async function(event) {
+        // Check if the clicked element is a trash icon
+        if (event.target.classList.contains("fa-trash-can")) {
+            const trashContainer = event.target.parentElement;
+            const projectId = trashContainer.dataset.id;
+            
             console.log("Deleting project with ID:", projectId)
             
             try {
@@ -320,11 +331,12 @@ export function deleteProject() {
             } catch (error) {
                 console.error("An error occurred while deleting project:", error)
             }
-        })
+        // })
+    }
     })
 }
 
-/////////////////////////////
+/////////////////////////
 
 const diplayNoneModal2 = () => {
     const modalview2 = document.querySelectorAll(".js-modal-view2")
@@ -362,187 +374,258 @@ export function addPhotosModal() {
             //////////////
             const addBtn = document.querySelector(".div-btn")
             addBtn.style.display = "none"
-
+            
             backModalView1(modalGallery, title, toggleElements, addBtn)
         })
     }
 }
 
 addPhotosModal()
-//////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////
-
-
-const validFileType = (file) => {
-    const fileTypes = ["image/jpeg", "image/png"]
-    return fileTypes.includes(file.type)
-}
-
-const validFileSize = (file) => {
-    return file.size <= 4 * 1024 * 1024 // 4 mo?????
-}
-
-// Check if the form is correctly fill
-function checkImageUrl() {
-    const imageFile = document.querySelector("[name=img-file]")
-    console.log("Selected input element:", imageFile)
-
-    if (!imageFile || !imageFile.files || imageFile.files.length === 0) {
-        // No file input or no files selected
-        return
-    }
-    
-    // addPhoto.addEventListener("click", () => {
-        
-    // })
-    // Convert fileList (.files) to an array
-    const files = Array.from(imageFile.files)
-    console.log(files)
-        
-        // // Error message for not having completed the form
-        // if (files.length === 0) {
-        //     alert("Veuillez sélectionner un fichier")
-        //     return
-        // }
-        
-        // Get the first file from the array
-        const file = files[0]
-       
-        
-        if (!validFileType(file)) {
-            alert ("Le fichier doit être de type JPEG ou PNG")
-            return
-        }
-        
-        if (!validFileSize(file)) {
-            alert("La taille du fichier doit être de 4 Mo maximun")
-        return
-    }
-    
-    // If everything is valid, proceed with handling the file
-    const preview = document.querySelector(".preview")
-    // Clear previous content with a loop
-    while (preview.firstChild) {
-        preview.removeChild(preview.firstChild)
-    }
-    
-    
-    const figure = document.createElement("figure")
-    const newImage = document.createElement("img")
-    try {
-        newImage.src = URL.createObjectURL(file)
-        console.log("Image source:", newImage.src)
-    } catch (error) {
-        console.log("Errorcreating image URL:", error)
-        throw new Error("Failed to display image preview!")
-    }
-    newImage.alt = "preview-image"
-    // Clear the previous
-    // preview.innerHTML = ""
-    figure.appendChild(newImage)
-    preview.appendChild(figure)
-    // preview.appendChild(newImage)
-
-    
-
-//     // Add event listener to handle image loading errors
-//   newImage.addEventListener("error", () => {
-//     console.error("Image failed to load!")
-//     // Handle image loading error gracefully, display message or notify user
-//     throw new Error("Image preview failed to load!")
-//   })
-}
-// checkImageUrl()
-
-// Add event listener to image input for change event
-const imageInput = document.querySelector("[name=img-file]")
-imageInput.addEventListener("change", checkImageUrl)
-
-function validateTitleModalForm() {
-    const modalForm = document.querySelector(".modal-form")
-
-    const title = document.querySelector("[name=title]").value.trim()
-
-    const regex = new RegExp("[a-zA-Z\s\-“”]+")
-
-    let validationTitre = regex.test(titre)
-    if (validationTitre === true) {
-        console.log(title)
-        return title
-    } else {
-        console.log("Attention certains caractères ne sont pas autorisés")
-    }
-}
-
-function validateModalForm() {
-    const imageOk = checkImageUrl()
-    const titleOk = validateTitleModalForm()
-    if (imageOk && titleOk) {
-        return
-    }
-}
-
-export function categoriesForm(projects) {
-    const categories = getCategoryNames(projects)
-    categories.shift()
-    console.log(categories)
-    const selectCategories = document.querySelector("[name=category]")
-
+// //////////////////////////////////////////////////////////////////////
+// ///////////////////////////////////////////////////////////////////////
+// Retrieves the categories from the API and integrates them into the form
+export function categoriesForm(categories) {
     let i = 0
     for (let category of categories) {
+        const selectCategories = document.querySelector("[name=category]")
         const option = document.createElement("option")
-        option.innerText = category
-        option.setAttribute("value", category.value)
+        option.innerText = category.name
+        option.setAttribute("value", category.id)
         selectCategories.appendChild(option)
         i++
     }
 }
 
-// export function generateCategoriesForm(categories) {
-//     const selectCategories = document.querySelector("[name=category]")
-
-//     for (let i = 0; i < categories.length; i++) {
-//         const category = categories[i].name
-//         const option = document.createElement("option")
-//         option.innerText = category
-//         option.setAttribute("value", category)
-//         selectCategories.appendChild(option)
-
-//     }
-// }
-
-export function fillModalForm(projects) {
-    checkImageUrl()
-    validateTitleModalForm()
-    categoriesForm(projects)
+// Validate file type
+function validFileType(file) {
+    const fileTypes = ["image/jpeg", "image/png"]
+    if (!fileTypes.includes(file.type)) {
+        throw new Error(`Veuillez entrer un fichier de type jpeg ou png.`)
+    }
 }
 
-// export async function postFormData(event) {
-//     event.preventDefault()
+// Validate file size
+function validFileSize(file) {
+    if (file.size > 4 * 1024 * 1024) {
+        throw new Error(`Veuillez entrer un fichier de maximun 4mo.`)
+    }
+}
 
-//     Get the form element & create a new form data
-//     var modalForm = document.querySelector(".modal-form")
-//     var formData = new FormData(modalForm)
+function isFileSelected(file) {
+    if (!file) {
+        throw new Error("Veuillez sélectionner une image.")
+    }
+}
 
-//     try {
-//         // Make a POST request to the API endpoint
-//         const response = await fetch("http://localhost:5678/api/users/works", {
-//             method: "POST",
-//             body: formData
-//         })
-
-//         wait for the response
-//         const formReturn = await response.json()
+// Preview image if there is one upload
+function previewImage(file) {
+    // Proceed with handling the file
+    const preview = document.querySelector(".preview")
+    // // Clear previous content with a loop
+    // while (preview.firstChild) {
+    //     preview.removeChild(preview.firstChild)
+    // }
+    preview.innerHTML = ''; // Clear previous content
         
-//         condition to login the user
-//         if (response.ok) {
-//             store the token locally and redirect
-//             return formReturn
-//         } else {
-//             throw new Error("Erreur dans les données")
-//         }
-//     } catch (error) {
-//         console.error("Error:", error)
-//     }
-// }
-// postFormData(event)
+    const figure = document.createElement("figure")
+    const newImage = document.createElement("img")
+    newImage.src = URL.createObjectURL(file) 
+    newImage.alt = "preview-image"
+    figure.appendChild(newImage)
+    preview.appendChild(figure)
+
+    // Toggle preview display based on the presence of a file
+    preview.style.display = file ? "block" : "none"
+}
+
+// Validate type, size and upload of the image
+const isFileValid = async (file) => {
+    try {
+        await validFileType(file)
+        await validFileSize(file)
+        await isFileSelected(file)
+        previewImage(file)
+        return true
+    } catch (error) {
+        console.log(error.message)
+        alert(error.message)
+        return false
+    }
+}
+// Attach change event listener to file input
+// function handleFile(file) {
+    const fileInput = document.querySelector("input[type='file']")
+    if (fileInput) {
+        fileInput.addEventListener("change", async function(event) {
+            const image = event.target.files[0]
+            await isFileValid(image)
+        })
+    }
+
+    // Function to handle file input change event
+function handlePreview() {
+    const fileInput = document.getElementById("img-file")
+    const label = document.querySelector("label[for='img-file']")
+    const preview = document.querySelector(".preview")
+
+    if (fileInput) {
+        fileInput.addEventListener("change", async function(event) {
+            const file = event.target.files[0]
+            if (file) {
+                // If a file is selected, show the preview and hide the label
+                await isFileValid(file)
+                label.classList.add("label-hidden")
+                label.disabled = false
+                label.style.backgroundColor = "#1D6154"
+                preview.style.display = "block"; // Show the preview
+            } else {
+                // Otherwise, hide the preview and show the label (if a previous file was selected)
+                label.classList.remove("label-hidden")
+                label.disabled = true
+                preview.style.display = "none"; // Hide the preview
+            }
+            // const image = event.target.files[0]
+            // await isFileValid(image)
+        
+        })
+    }
+}
+handlePreview()
+
+
+// Check title
+function isTitleValid(title) {
+    // const titleInput = document.getElementById("title")
+    const regex = /^[a-zA-Z\s\-“”]+$/
+    const titleTested = regex.test(title.trim())
+    if (!titleTested) {
+        throw new Error("Veuillez entrer un titre en caractères alphabétiques, espaces et symboles spécifiques uniquement.")
+    }
+    return title
+}
+// isTitleValid()
+
+
+// Check if a category is selected
+function isCategorySelected(category) {
+    const categoryInput = document.getElementById("select-category")
+    if (!categoryInput.value) {
+        throw new Error(`Veuillez sélectionner une catégorie.`)
+    }
+    return category
+}
+// // isCategorySelected()
+
+// Check if the modal is open
+function isModalOpen() {
+    return modal !== null && modal.style.display !== "none"
+}
+
+// Check if the modal form is correctly fill
+async function isModalFormValid() {
+    try {
+        // Check if the modal is open
+        if (!isModalOpen()) {
+            return false; // Modal is not open, so form is not valid
+        }
+
+        // Check file validation
+        const fileInput = document.getElementById("img-file")
+        const file = fileInput.files[0]
+        await isFileValid(file)
+        // Change the color of the button
+      
+        // Check title validation
+        const titleInput = document.getElementById("title")
+        const title = titleInput.value
+        isTitleValid(title)
+
+        // Check category selection
+        const categoryInput = document.getElementById("select-category")
+        isCategorySelected(categoryInput.value) // Check category selection
+
+        // If all checks pass, enable the button
+        document.getElementById("validate-button").disabled = false
+        return true
+    } catch (error) {
+        console.error(error)
+        alert(error.message)
+        return false
+    }
+}
+
+// isModalFormValid()
+
+export function postFormData() {
+    const modalForm = document.querySelector(".modal-form")
+    if (!modalForm) {
+        return
+    }
+    modalForm.addEventListener('submit', async function(event) {
+        event.preventDefault()
+
+        // Check if form data is valid and create FormData
+        const validForm = await isModalFormValid()
+
+        if (validForm) {
+            //get the token and select the trash icon
+            const tokenItem = window.localStorage.getItem("token")
+
+            let token
+            if (tokenItem) {
+            token = JSON.parse(tokenItem).token
+            }
+
+            // Get the form data from the modal form
+            const formData = new FormData()
+        
+            // Get file input and append file
+            const fileInput = document.getElementById("img-file")
+            const file = fileInput.files[0]
+            formData.append('image', file)
+            console.log(file)
+
+            // Get title input and append title
+            const titleInput = document.getElementById("title")
+            const title = titleInput.value
+            formData.append('title', title)
+            console.log(title)
+
+            // Get category input and append category
+            const categoryInput = document.getElementById("select-category")
+            const category = categoryInput.value
+            formData.append('category', category)
+            console.log(category)
+
+            // Use the formData to submit the form
+            try {
+                const response = await fetch("http://localhost:5678/api/works", {
+                    method: "POST",
+                    headers: { 
+                        "Authorization": `Bearer ${token}` 
+                    },
+                    body: formData
+                })
+                if (response.ok) {
+                    // Retrieve the response data
+                    const responseData = await response.json()
+                    console.log("Nouveau project envoyé:", responseData)
+
+                    // Append the preview image
+                    const gallery = document.querySelector(".gallery")
+                    const figure = document.createElement("figure")
+                    const img = document.createElement("img")
+                    figure.appendChild(img)
+                    // img.src = URL.createObjectURL(formData.get('image'))
+                    img.src = responseData.imageUrl
+                    gallery.appendChild(figure)
+                } else {
+                    throw new Error("Erreur dans les données")
+                }
+            } catch (error) {
+                 console.error("Erreur:", error)
+            }
+        }       
+    })
+}
+postFormData()
