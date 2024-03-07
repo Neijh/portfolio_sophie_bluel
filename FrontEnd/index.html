@@ -10,10 +10,17 @@
 		<meta name="description" content="">
 		<link rel="stylesheet" href="./assets/style.css">
 		<script src="https://kit.fontawesome.com/05bd8f82e6.js" crossorigin="anonymous"></script>
-		<script type="module" src="./assets/script/config.js" defer></script>
+		<!-- <script type="module" src="./assets/script/config.js" defer></script>
 		<script type="module" src="./assets/script/main.js" defer></script>
-		<script type="module" src="./assets/script/script.js" defer></script>
-		<!-- <script type="module" src="./assets/script/backup.js" defer></script> -->
+		<script type="module" src="./assets/script/script.js" defer></script> -->
+		<script type="module" src="./assets/script/data/projects.js" defer></script>
+		<!-- <script type="module" src="./assets/script/main/main.js" defer></script> -->
+		<script type="module" src="./assets/script/data/config.js" defer></script>
+		<script type="module" src="./assets/script/main/script.js" defer></script>
+		<script type="module" src="./assets/script/main/modal.js" defer></script>
+
+
+
 	</head>
 	<body>
 		<div class="js-admin banner">
@@ -47,53 +54,8 @@
 				<section id="portfolio">
 					<h2>
 						Mes Projets
-						<a href="#modal1" class="js-modal js-admin edit-projects"><i class="fa-regular fa-pen-to-square"></i>modifier</a>
+						<button class="open-modal js-admin"><i class="fa-regular fa-pen-to-square"></i>modifier</button>
 					</h2>
-					
-
-					<aside id="modal1" class="modal" aria-hidden="true" role="dialog" aria-labelledby="title-modal" style="display: none;">
-						<div class="modal-wrapper js-modal-stop">
-								<div class="top-container">
-									
-									<button class="close-btn js-modal-close"><i class="fa-solid fa-xmark"></i></button>
-								</div>
-								<h3 class="title-modal">Galerie photo</h3>
-								<div class="modal-gallery">
-								</div>
-								<hr class="line">
-								<div class="div-btn">
-									<button class="add-btn">Ajouter une photo</button>
-								</div>
-							</div>
-					</aside>
-
-						<!-- <div class="modal-wrapper js-modal-stop toggle-modal">
-							<div class="top-container">
-								<i class="fa-solid fa-arrow-left"></i>
-								<button class="close-btn js-modal-close"><i class="fa-solid fa-xmark"></i></button>
-							</div>
-							<h3 class="title-modal">Galerie photo</h3>
-									<div class="preview-container">
-										<i class="fa-regular fa-image"></i>
-										<button>+ Ajouter Photo</button>
-										<p>jpg, png:4mo max</p>
-									</div>
-									<div class="modal-container">
-										<form  class="modal-form">
-											<label for="title">Titre</label>
-											<input type="text" id="title" name="title">
-											<label for="select-category">Catégorie</label>
-											<select id="select-category" name="category" class="category">
-											<option value=""><i class="fa-solid fa-chevron-down"></i></option>
-										</form>
-									</div>
-							</div>
-							<hr class="line">
-							<div class="div-btn">
-								 <button class="validate-button">Valider</button>
-							</div>
-						</div> -->
-					<!-- </aside> -->
 					<div class="filter"></div>
 					<div class="gallery"></div>
 				</section>
@@ -102,45 +64,53 @@
 					<p>Vous avez un projet ? Discutons-en !</p>
 					<form action="#" method="post">
 						<label for="name">Nom</label>
-						<input type="text" name="name" id="name">
+						<input type="text" name="name" id="name" class="form-input">
 						<label for="email">Email</label>
-						<input type="email" name="email" id="email">
+						<input type="email" name="email" id="email" class="form-input">
 						<label for="message">Message</label>
 						<textarea name="message" id="message" cols="30" rows="10"></textarea>
 						<input type="submit" value="Envoyer">
 					</form>
 				</section>
-				<!-- <aside id="modal1" class="modal" aria-hidden="true" role="dialog" aria-labelledby="title-modal" style="display: none;">
+
+				<dialog id="modal">
 					<div class="modal-wrapper js-modal-stop">
 						<div class="top-container">
-							<i class="fa-solid fa-arrow-left toggle-view"></i>
-							<button class="close-btn js-modal-close"><i class="fa-solid fa-xmark"></i></button>
+							<i class="fa-solid fa-arrow-left js-modal-view2"></i>
+							<button class="close-modal"><i class="fa-solid fa-xmark"></i></button>
 						</div>
 						<h3 class="title-modal">Galerie photo</h3>
 						<div class="modal-gallery">
-							<div class="js-add-photos  toggle-view">
-								<div class="preview-container">
-									<i class="fa-regular fa-image"></i>
-									<button>+ Ajouter Photo</button>
-									<p>jpg, png:4mo max</p>
+							<form class="modal-form js-modal-view2">
+								<div class="preview-container js-modal-view2">
+									<div class="preview"></div>
+									<div class="preview-input">
+										<i class="fa-regular fa-image"></i>
+										<input type="file" id="img-file" name="img-file" class="img-file" required>
+										<label for="img-file">+ Ajouter Photo</label>
+										<p>jpg, png:4mo max</p>
+									</div>
 								</div>
-								<form  class="modal-form">
-									<label for="title">Titre</label>
-									<input type="text" id="title" name="title">
-									<label for="select-category">Catégorie</label>
-									<select id="select-category" name="category" class="category">
-									<option value=""><i class="fa-solid fa-chevron-down"></i></option>
-								</form>
-								
-							</div>
+								<label for="title" class="m-form-label">Titre</label>
+								<input type="text" id="title" name="title" class="form-input" required>
+								<label for="select-category" class="m-form-label">Catégorie</label>
+								<div class="chevron">
+									<i class="fa-solid fa-chevron-down"></i>
+									<select id="select-category" name="category" class="category form-input" required>
+										<option value=""></option>
+									</select>
+								</div>
+								<hr class="line">
+								<input type="submit" value="Valider" class="validate-button" id="disabled">
+							</form>
 						</div>
-						<hr class="line">
 						<div class="div-btn">
+							<hr class="line">
 							<button class="add-btn">Ajouter une photo</button>
-							<button class="validate-button toggle-view">Valider</button>
 						</div>
+								
 					</div>
-				</aside> -->
+				</dialog>
 			</main>
 		</div>
 		
