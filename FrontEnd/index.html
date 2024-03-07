@@ -54,10 +54,8 @@
 				<section id="portfolio">
 					<h2>
 						Mes Projets
-						<a href="#modal1" class="js-modal js-admin edit-projects"><i class="fa-regular fa-pen-to-square"></i>modifier</a>
+						<button class="open-modal js-admin"><i class="fa-regular fa-pen-to-square"></i>modifier</button>
 					</h2>
-					
-
 					<div class="filter"></div>
 					<div class="gallery"></div>
 				</section>
@@ -74,43 +72,45 @@
 						<input type="submit" value="Envoyer">
 					</form>
 				</section>
-				<aside id="modal1" class="modal" aria-hidden="true" role="dialog" aria-labelledby="title-modal" style="display: none;">
+
+				<dialog id="modal">
 					<div class="modal-wrapper js-modal-stop">
 						<div class="top-container">
 							<i class="fa-solid fa-arrow-left js-modal-view2"></i>
-							<button class="close-btn js-modal-close"><i class="fa-solid fa-xmark"></i></button>
+							<button class="close-modal"><i class="fa-solid fa-xmark"></i></button>
 						</div>
 						<h3 class="title-modal">Galerie photo</h3>
 						<div class="modal-gallery">
 							<form class="modal-form js-modal-view2">
 								<div class="preview-container js-modal-view2">
 									<div class="preview"></div>
-									<i class="fa-regular fa-image"></i>
-									<input type="file" id="img-file" name="img-file" class="img-file" >
-									<label for="img-file">+ Ajouter Photo</label>
-									<p>jpg, png:4mo max</p>
+									<div class="preview-input">
+										<i class="fa-regular fa-image"></i>
+										<input type="file" id="img-file" name="img-file" class="img-file" required>
+										<label for="img-file">+ Ajouter Photo</label>
+										<p>jpg, png:4mo max</p>
+									</div>
 								</div>
 								<label for="title" class="m-form-label">Titre</label>
-								<input type="text" id="title" name="title" class="form-input" >
+								<input type="text" id="title" name="title" class="form-input" required>
 								<label for="select-category" class="m-form-label">Catégorie</label>
 								<div class="chevron">
 									<i class="fa-solid fa-chevron-down"></i>
-									<select id="select-category" name="category" class="category form-input">
+									<select id="select-category" name="category" class="category form-input" required>
 										<option value=""></option>
 									</select>
 								</div>
 								<hr class="line">
-								<input type="submit" value="Valider" class="validate-button" id="disabled" disabled>
+								<input type="submit" value="Valider" class="validate-button" id="disabled">
 							</form>
 						</div>
 						<div class="div-btn">
 							<hr class="line">
 							<button class="add-btn">Ajouter une photo</button>
-									<!-- <button class="validate-button js-modal-view2">Valider</button> -->
 						</div>
 								
 					</div>
-				</aside>
+				</dialog>
 			</main>
 		</div>
 		

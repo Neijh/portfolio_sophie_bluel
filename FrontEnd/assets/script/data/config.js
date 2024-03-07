@@ -1,12 +1,11 @@
 ////////////////////////////////////////////////////////////////////////////
 // Contains and retrieves all the data necessary for the operation of the site //
 ///////////////////////////////////////////////////////////////////////////
-// import { fetchProjects } from "../data/projects.js"
-// const projects = await fetchProjects()
 
+// Creates the basis of the gallery.
 export function createReusableGallery(image, id) {
     const figure = document.createElement("figure")
-    // figure.setAttribute("data-id", id)
+    // Put the id of projects on the figure.
     figure.id = id
     const imageElement = document.createElement("img")
     imageElement.setAttribute("class", "imgGallery")
@@ -17,13 +16,19 @@ export function createReusableGallery(image, id) {
     return figure
 }
 
-// export function iterateProjects(projects, image, title, id) {
-//     for (let i = 0; i < projects.length; i++) {
-//         // const image = projects[i].imageUrl
-//         // const title = projects[i].title
-//         // const id = projects[i].id
-//         const { imageURL: image, title, id } = projects[i] // Destructure project object
-//         callback(image, title, id)
-//     }
-// }
+// Get the token if there is one in the local storage.
+export function getToken() {
+
+    const tokenItem = window.localStorage.getItem("token")
+    
+    let token
+    if (tokenItem) {
+    token = JSON.parse(tokenItem).token
+    }
+
+    return token
+}
+
+// Gallery constant
+export const gallery = document.querySelector(".gallery")
 
