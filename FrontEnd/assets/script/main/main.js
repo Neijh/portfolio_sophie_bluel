@@ -1,53 +1,31 @@
-////////////////////////////////////////////////////////////////////////////
-// initializes and launches the main final function //
-///////////////////////////////////////////////////////////////////////////
+/********************************************************************************
+ ************** Initializes and launches the main final function *
+ ********************************************************************************/
 
-import { fetchProjects } from "../data/projects.js"
-// import { generateAndFilter, addListenerSendLogin, logAdminOut, toggleModal, generateModalGallery, deleteProject, categoriesForm } from "./script.js"
-import { generateProjects } from "./script.js"
-// async function fetchAndGenerateCategories() {
-//     try {
-//         const categories = await fetchCategories()
-//         if (categories) {
-//             categoriesForm(categories)
-//         }
-//     } catch (error) {
-//         console.error("An Error occured while fetching the categories", error)
-//     }
-// }
-// fetchAndGenerateCategories()
-// // Call the function to initiate the data fetching
-// fetchDataAndGenerate()
+import { initializeGallery, logAdminOut } from "./script.js"
+import { initializeModalGallery, deleteProject, initializeCategories, previewFile, updateSubmitButton, postFormData } from "./modal.js"
 
-// Fetch the data using the fetchProjects function
-async function fetchDataAndGenerate() {
-    try {
-        const projects = await fetchProjects()
+//////////////////////////////////////////////////////////////////////////////
+// Launch the main gallery and generate filter buttons
+initializeGallery()
 
-        generateProjects(projects)
-        // if (projects) {
-            // Call the generateProjects function and pass the fetched data directly
-            
+// When logout, display none the elements of the admin
+logAdminOut()
 
+// Launch the modal gallery
+initializeModalGallery()
 
+// Delete projects on the galleries
+deleteProject()
 
-            // addListenerSendLogin()
-            // logAdminOut()
-            // toggleModal()
-            // deleteProject()
-            // generateModalGallery(projects)
-            // isModalFormValid()
-        // }
-        // addPhotos()
-    } catch (error) {
-        console.error("An Error occurred while fetching the data:", error)
-    }
-}
-fetchDataAndGenerate()
+// Retrieves the categories from swagger and integrates them into the form
+initializeCategories()
 
-// // postFormData(event)
+// Preview image in the form
+previewFile()
 
+// Update submit button color initially
+updateSubmitButton()
 
-
-// Mis de côté
-// generateAndFilter(projects)
+// Add projects to the galleries
+postFormData()
