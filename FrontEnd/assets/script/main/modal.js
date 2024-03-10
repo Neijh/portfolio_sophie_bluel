@@ -99,12 +99,12 @@ function createModalGallery(projects) {
 
         //create tags and elements intended for the modal.
         const element = createReusableGallery(image, id)
+        addTrashIcon(element)
         modalGallery.appendChild(element)
             
-        addTrashIcon(element)
 
-        removeTitle()
     }
+    removeTitle()
 }
 
 // Function to remove title on modal gallery
@@ -191,6 +191,13 @@ export async function initializeCategories() {
 // Retrieves the categories from swagger and integrates them into the form
 
 function categoriesForm(categories) {
+    categoryInput.innerHTML = ""
+
+    // Ajoute l'option "Selectionner une categorie"
+    const defaultOption = document.createElement("option")
+    defaultOption.setAttribute("value", "")
+    categoryInput.appendChild(defaultOption)
+
     let i = 0
     for (let category of categories) {
         const option = document.createElement("option")
@@ -206,6 +213,7 @@ function categoriesForm(categories) {
 function isFileValid(file) {
     if (!file) return
     const fileTypes = ["image/jpeg", "image/png"]
+    const maxSize = 4 * 1024 * 1024
 
     if (!fileTypes.includes(file.type)) {
         alert("Veuillez entrer un fichier de type png ou jpeg.")
@@ -213,7 +221,7 @@ function isFileValid(file) {
         return false
     }
 
-    if (fileSize > 4 * 1024 * 1024) {
+    if (file.size > maxSize) {
         alert("Le fichier dépasse 4 Mo.")
         return false
     }
@@ -233,7 +241,7 @@ export function previewFile() {
                 preview.style.display = "block" // Show the preview container
                 
                 const previewInput = document.querySelector(".preview-input")
-                previewInput.classList.add("hidden") // Hide the form input
+                previewInput.classList.add("opacity") // Hide the form input
                 updateSubmitButton()
             }
             reader.readAsDataURL(file)
@@ -256,13 +264,19 @@ export function updateSubmitButton() {
 // Check if all the input of the modal form are filled
 
 function isModalFormValid() {
-    const file = fileInput.files[0]
-    if (!file) return
-    const validFile = isFileValid(file)
-    const validTitle = titleInput.value.trim() !== ""
-    const validCategory = categoryInput.value !== ""
+    // Check if there is a file in the preview
+    const previewImage = document.querySelector('.preview img');
+    if (!previewImage) return false; // No file selected
 
-    return validFile && validTitle && validCategory
+    // Check if the title is valid
+    const regex = /^[a-zA-Z0-9\s\-_.,:;“”"'()!?&]+$/
+    const titleValue = titleInput.value.trim()
+    const validTitle = regex.test(titleValue);
+
+    // Check if a category is selected
+    const validCategory = categoryInput.value !== "";
+
+    return validTitle && validCategory; // No need to validate file as it's already in the preview
 }
 
 // Attach event listeners for input event on title and category input fields
@@ -273,9 +287,7 @@ categoryInput.addEventListener("input", updateSubmitButton)
 
 export function postFormData() {
     const modalForm = document.querySelector(".modal-form")
-    if (!modalForm) {
-        return
-    }
+    if (!modalForm) return
     modalForm.addEventListener('submit', async function(event) {
         event.preventDefault()
 
@@ -316,6 +328,11 @@ export function postFormData() {
                     const responseData = await response.json()
                     console.log("Nouveau project envoyé:", responseData)
 
+                    const newModalFigure = createReusableGallery(responseData.imageUrl, responseData.id, responseData.title)
+                    addTrashIcon(newModalFigure)
+                    modalGallery.appendChild(newModalFigure)
+                    removeTitle()
+
                     const newFigure = createReusableGallery(responseData.imageUrl, responseData.id, responseData.title)
                     gallery.appendChild(newFigure)
 
@@ -338,7 +355,7 @@ function resetForm() {
     preview.style.display = "none"
                     
     const previewInput = document.querySelector(".preview-input")
-    previewInput.classList.remove("hidden")
+    previewInput.classList.remove("opacity")
 
     titleInput.value = ''
     categoryInput.value = ''
