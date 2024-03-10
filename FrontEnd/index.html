@@ -9,18 +9,13 @@
 		<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
 		<meta name="description" content="">
 		<link rel="stylesheet" href="./assets/style.css">
+		<link rel="icon" href="data:;base64,iVBORw0KGgo=">
 		<script src="https://kit.fontawesome.com/05bd8f82e6.js" crossorigin="anonymous"></script>
-		<!-- <script type="module" src="./assets/script/config.js" defer></script>
-		<script type="module" src="./assets/script/main.js" defer></script>
-		<script type="module" src="./assets/script/script.js" defer></script> -->
-		<script type="module" src="./assets/script/data/projects.js" defer></script>
-		<!-- <script type="module" src="./assets/script/main/main.js" defer></script> -->
-		<script type="module" src="./assets/script/data/config.js" defer></script>
-		<script type="module" src="./assets/script/main/script.js" defer></script>
-		<script type="module" src="./assets/script/main/modal.js" defer></script>
-
-
-
+		<script type="module" src="./assets/script/data/api.js"></script>
+		<script type="module" src="./assets/script/data/config.js"></script>
+		<script type="module" src="./assets/script/main/main.js"></script>
+		<script type="module" src="./assets/script/main/script.js"></script>
+		<script type="module" src="./assets/script/main/modal.js"></script>
 	</head>
 	<body>
 		<div class="js-admin banner">
@@ -40,7 +35,7 @@
 				</nav>
 			</header>
 			<main>
-				<section id="introduction">
+				<div id="introduction">
 					<figure>
 						<img src="./assets/images/sophie-bluel.png" alt="">
 					</figure>
@@ -50,7 +45,7 @@
 						<p>Chaque projet sera étudié en commun, de façon à mettre en valeur les volumes, les matières et les couleurs dans le respect de l’esprit des lieux et le choix adapté des matériaux. Le suivi du chantier sera assuré dans le souci du détail, le respect du planning et du budget.</p>
 						<p>En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG, décorateur(trice)</p>
 					</article>
-				</section>
+				</div>
 				<section id="portfolio">
 					<h2>
 						Mes Projets
@@ -72,48 +67,53 @@
 						<input type="submit" value="Envoyer">
 					</form>
 				</section>
-
 				<dialog id="modal">
 					<div class="modal-wrapper js-modal-stop">
-						<div class="top-container">
-							<i class="fa-solid fa-arrow-left js-modal-view2"></i>
-							<button class="close-modal"><i class="fa-solid fa-xmark"></i></button>
-						</div>
-						<h3 class="title-modal">Galerie photo</h3>
-						<div class="modal-gallery">
-							<form class="modal-form js-modal-view2">
-								<div class="preview-container js-modal-view2">
-									<div class="preview"></div>
-									<div class="preview-input">
-										<i class="fa-regular fa-image"></i>
-										<input type="file" id="img-file" name="img-file" class="img-file" required>
-										<label for="img-file">+ Ajouter Photo</label>
-										<p>jpg, png:4mo max</p>
-									</div>
-								</div>
-								<label for="title" class="m-form-label">Titre</label>
-								<input type="text" id="title" name="title" class="form-input" required>
-								<label for="select-category" class="m-form-label">Catégorie</label>
-								<div class="chevron">
-									<i class="fa-solid fa-chevron-down"></i>
-									<select id="select-category" name="category" class="category form-input" required>
-										<option value=""></option>
-									</select>
-								</div>
+						<div class="js-modal-view1">
+							<div class="top-container">
+								<button class="close-modal"><i class="fa-solid fa-xmark"></i></button>
+							</div>
+							<h3 class="title-modal">Galerie photo</h3>
+							<div class="modal-gallery"></div>
+							<div class="div-btn">
 								<hr class="line">
-								<input type="submit" value="Valider" class="validate-button" id="disabled">
-							</form>
+								<button class="add-btn">Ajouter une photo</button>
+							</div>
 						</div>
-						<div class="div-btn">
-							<hr class="line">
-							<button class="add-btn">Ajouter une photo</button>
+						<div class="js-modal-view2">
+							<div class="top-container">
+								<i class="fa-solid fa-arrow-left js-modal-view2"></i>
+								<button class="close-modal"><i class="fa-solid fa-xmark"></i></button>
+							</div>
+							<h3 class="title-modal">Ajout photo</h3>
+							<div class="modal-gallery">
+								<form class="modal-form js-modal-view2">
+									<div class="preview-container js-modal-view2">
+										<div class="preview"></div>
+										<div class="preview-input">
+											<i class="fa-regular fa-image"></i>
+											<input type="file" id="img-file" name="img-file" class="input-file">
+											<label for="img-file">+ Ajouter Photo</label>
+											<p>jpg, png:4mo max</p>
+										</div>
+									</div>
+									<label for="title" class="m-form-label">Titre</label>
+									<input type="text" id="title" name="title" class="form-input" >
+									<label for="select-category" class="m-form-label">Catégorie</label>
+									<div class="chevron">
+										<i class="fa-solid fa-chevron-down"></i>
+										<select id="select-category" name="category" class="category form-input" >
+										</select>
+									</div>
+									<hr class="line">
+									<input type="submit" value="Valider" class="validate-button js-modal-view2" id="disabled">
+								</form>
+							</div>
 						</div>
-								
 					</div>
 				</dialog>
 			</main>
 		</div>
-		
 		<footer>
 			<nav>
 				<ul>

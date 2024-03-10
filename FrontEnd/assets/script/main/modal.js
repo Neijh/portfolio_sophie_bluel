@@ -1,27 +1,32 @@
-/**********************************************************
- ***** Modal
- **********************************************************/
-// Import fetchProjects
-import { fetchProjects, fetchCategories } from "../data/projects.js"
+/********************************************************************************
+ ************** All functions relate to modal *
+ ********************************************************************************/
+
+import { fetchProjects, fetchCategories } from "../data/api.js"
 import { createReusableGallery, getToken } from "../data/config.js"
 
-const projects = await fetchProjects()
-const categories = await fetchCategories()
+// Constant often use
 
 const gallery = document.querySelector(".gallery")
 const modalGallery = document.querySelector(".modal-gallery")
 
-
 const modal = document.getElementById("modal")
 const openModal = document.querySelector(".open-modal")
-const closeModal = document.querySelector(".close-modal")
+const closeModal = document.querySelectorAll(".close-modal")
+
+//////////////////////////////////////////////////////////////////////////////
+// Add Event listener to open and close the modal
 
 openModal.addEventListener("click", () => {
     modal.showModal()
+    modalView1()
+    toggleModalView()
 })
 
-closeModal.addEventListener("click", () => {
-    modal.close()
+closeModal.forEach(button => {
+    button.addEventListener("click", () => {
+        modal.close()
+    })
 })
 
 modal.addEventListener("click", (event) => {
@@ -30,11 +35,53 @@ modal.addEventListener("click", (event) => {
     }
 })
 
+// Display the different views of the modal
+
+const view1 = document.querySelector(".js-modal-view1")
+const view2 = document.querySelector(".js-modal-view2")
+
+function modalView1() {
+    view1.classList.remove("hidden")
+    view2.classList.add("hidden")
+}
+
+function modalView2() {
+    view1.classList.add("hidden")
+    view2.classList.remove("hidden")
+}
+
+function toggleModalView() {
+    // Display view 2 when "Ajouter photo" button is clicked
+    const addButton = document.querySelector(".add-btn")
+    addButton.addEventListener("click", function () {
+        resetForm()
+        modalView2()
+    })
+    // Display view 1 when the arrow on the top left is clicked
+    const arrow = document.querySelector(".fa-arrow-left")
+    arrow.addEventListener("click", () => {
+        modalView1()
+    })
+}
+
+//////////////////////////////////////////////////////////////////////////////
+// Create modal gallery and add trash icon
+
+export async function initializeModalGallery() {
+    try {
+        const projects = await fetchProjects()
+        
+        createModalGallery(projects)
+    } catch (error) {
+        console.error("Error fetching projects:", error)
+    }
+}
+
 // Function to add trash icon to the figure
-function addTrashIcon(figure) { // <====j'ai enlevé l'id
+
+function addTrashIcon(figure) {
     const trashContainer = document.createElement("button")
     trashContainer.classList.add("trash-container")
-    // trashContainer.setAttribute("data-id", id)
 
     const trashIcon = document.createElement("i")
     trashIcon.classList.add("fa-solid", "fa-trash-can")
@@ -43,77 +90,43 @@ function addTrashIcon(figure) { // <====j'ai enlevé l'id
     figure.appendChild(trashContainer)
 }
 
-async function createModalGallery(projects) {
-    // Iterate through projects.
+// Function to create the modal gallery
+
+function createModalGallery(projects) {
     for (let i = 0; i < projects.length; i++) {
         const image = projects[i].imageUrl
         const id = projects[i].id
 
         //create tags and elements intended for the modal.
-        if (modalGallery) {
-            // Add the one already create.
-            const element = createReusableGallery(image, id)
-        
-            //add to the modal the architect's work
-            modalGallery.appendChild(element)
-
-            addTrashIcon(element)
-        }
-    }
-}
-createModalGallery(projects)
-
-function displayView2() {
-    // const modalWrapper1 = document.querySelector(".modal-wrapper")
-    const addButton = document.querySelector(".add-btn")
-
-        addButton.addEventListener("click", function () {
-            //disable the gallery & change of content
-            const modalPhoto = document.querySelectorAll(".modal-gallery figure")
-            modalPhoto.forEach(figure => figure.style.display = "none")
-            // change the title
-            const title = document.querySelector(".title-modal")
-            title.innerText = "Ajout photo"
-            //////////////
-            const toggleElements = document.querySelectorAll(".js-modal-view2")
-            toggleElements.forEach(element => element.style.display = "flex")
-            //////////////
-            const addBtn = document.querySelector(".div-btn")
-            addBtn.style.display = "none"
+        const element = createReusableGallery(image, id)
+        addTrashIcon(element)
+        modalGallery.appendChild(element)
             
-            backModalView1(modalPhoto, title, toggleElements, addBtn)
-        })
-    // }
-}
 
-displayView2()
-
-const diplayNoneModal2 = () => {
-    const modalview2 = document.querySelectorAll(".js-modal-view2")
-    if (modalview2) {
-        modalview2.forEach(e => e.style.display = "none")
     }
+    removeTitle()
 }
-diplayNoneModal2()
 
-const backModalView1 = (modalGallery, title, toggleElements, addBtn) => {
-    document.querySelector(".fa-arrow-left").addEventListener("click", () => {
-        modalGallery.forEach(figure => figure.style.display = "flex")
-        title.innerText = "Galerie photo"
-        toggleElements.forEach(element => element.style.display = "none")
-        document.querySelector(".validate-button").style.display= "none"
-        addBtn.style.display = "flex"
+// Function to remove title on modal gallery
+
+function removeTitle() {
+    const figures = modalGallery.querySelectorAll("figure")
+    figures.forEach(figure => {
+        const figcaption = figure.querySelector("figcaption")
+        if (figcaption) {
+            figure.removeChild(figcaption)
+        }
     })
 }
 
-// Delete project in the gallery. 
-function deleteProject() {
 
-    // Get the token
+//////////////////////////////////////////////////////////////////////////////
+// Delete project in the gallery
+
+export function deleteProject() {
     let token = getToken()
 
-    // const modalGallery = document.querySelector(".modal-gallery")
-    if (!modalGallery) return; // Exit early if the gallery container doesn't exist
+    if (!modalGallery) return
 
     // Add a single click event listener to the gallery container
     modalGallery.addEventListener("click", async function(event) {
@@ -143,7 +156,6 @@ function deleteProject() {
 
                     modal.close()
 
-
                 } else {
                     const errorMessage = await response.text()
                     console.error("Failed to delete project:", errorMessage)
@@ -151,23 +163,41 @@ function deleteProject() {
             } catch (error) {
                 console.error("An error occurred while deleting project:", error)
             }
-        //////////////////////
-        } else {
-            console.error("Parent figure not found!")
+
+            } else {
+                console.error("Parent figure not found!")
+            }
         }
-    ///////////////////////////
-    }
     })
 }
-deleteProject()
 
-// Add project in the gallery.
+//////////////////////////////////////////////////////////////////////////////
+// Add projects in the gallery
+
 const categoryInput = document.getElementById("select-category")
 const fileInput = document.getElementById("img-file")
 const titleInput = document.getElementById("title")
 
-// Retrieves the categories from the API and integrates them into the form
+export async function initializeCategories() {
+    try {
+        const categories = await fetchCategories()
+        categoriesForm(categories)
+
+    } catch (error) {
+        console.error("Error fetching categories:", error)
+    }
+}
+
+// Retrieves the categories from swagger and integrates them into the form
+
 function categoriesForm(categories) {
+    categoryInput.innerHTML = ""
+
+    // Ajoute l'option "Selectionner une categorie"
+    const defaultOption = document.createElement("option")
+    defaultOption.setAttribute("value", "")
+    categoryInput.appendChild(defaultOption)
+
     let i = 0
     for (let category of categories) {
         const option = document.createElement("option")
@@ -177,16 +207,13 @@ function categoriesForm(categories) {
         i++
     }
 }
-categoriesForm(categories)
+
+// Check if the image file is valid and return a boolean
 
 function isFileValid(file) {
-    // if (!file) {
-    //     alert("Veuillez sélectionner un fichier.")
-    //     return false
-    // }
     if (!file) return
-    const fileSize = file.size / (1024 * 1024)
     const fileTypes = ["image/jpeg", "image/png"]
+    const maxSize = 4 * 1024 * 1024
 
     if (!fileTypes.includes(file.type)) {
         alert("Veuillez entrer un fichier de type png ou jpeg.")
@@ -194,17 +221,16 @@ function isFileValid(file) {
         return false
     }
 
-    if (fileSize > 4) {
+    if (file.size > maxSize) {
         alert("Le fichier dépasse 4 Mo.")
         return false
     }
     return true
 }
-// isFileValid()
-// console.log(isFileValid())
 
 // Display the file preview
-function previewFile() {
+
+export function previewFile() {
     fileInput.addEventListener("change", async function(event) {
         const file = event.target.files[0]
         if (isFileValid(file)) {
@@ -215,11 +241,11 @@ function previewFile() {
                 preview.style.display = "block" // Show the preview container
                 
                 const previewInput = document.querySelector(".preview-input")
-                previewInput.classList.add("hidden") // Hide the form input
+                previewInput.classList.add("opacity") // Hide the form input
                 updateSubmitButton()
             }
             reader.readAsDataURL(file)
-        } else {
+        } else {          
             // Clear the file input if invalid
             fileInput.value = ""
             updateSubmitButton()
@@ -227,49 +253,41 @@ function previewFile() {
     })
 }
 
-function updateSubmitButton() {
+// If the modal form is valid, change the color of the button
+
+export function updateSubmitButton() {
     const valid = isModalFormValid()
     const submitButton = document.querySelector(".validate-button")
-    // submitButton.disabled = !valid; // Disable the button if inputs are invalid
     submitButton.style.backgroundColor = valid ? "#1D6154" : "" // Change color if inputs are valid
 }
 
+// Check if all the input of the modal form are filled
+
 function isModalFormValid() {
-    const file = fileInput.files[0]
-    const validFile = isFileValid(file)
-    const validTitle = titleInput.value.trim() !== ""
-    const validCategory = categoryInput.value !== ""
+    // Check if there is a file in the preview
+    const previewImage = document.querySelector('.preview img');
+    if (!previewImage) return false; // No file selected
 
-    return validFile && validTitle && validCategory
+    // Check if the title is valid
+    const regex = /^[a-zA-Z0-9\s\-_.,:;“”"'()!?&]+$/
+    const titleValue = titleInput.value.trim()
+    const validTitle = regex.test(titleValue);
 
-    // try {
-    //     const file = fileInput.files[0]
-    //     if (!file) {
-    //         throw new Error("Veuillez sélectionner une image.")
-    //     }
-    // const validFile = isFileValid(file)
-    // const validTitle = titleInput.value.trim() !== ""
-    // const validCategory = categoryInput.value !== ""
+    // Check if a category is selected
+    const validCategory = categoryInput.value !== "";
 
-    // return validFile && validTitle && validCategory
-    // } catch (error) {
-    //     console.log(error)
-    //     alert(error.message)
-    // }
+    return validTitle && validCategory; // No need to validate file as it's already in the preview
 }
-previewFile()
-// Attach event listeners for input event on title and category input fields
-titleInput.addEventListener("input", updateSubmitButton);
-categoryInput.addEventListener("input", updateSubmitButton);
 
-// Update submit button color initially
-updateSubmitButton()
+// Attach event listeners for input event on title and category input fields
+titleInput.addEventListener("input", updateSubmitButton)
+categoryInput.addEventListener("input", updateSubmitButton)
+
+// Add project to the galleries
 
 export function postFormData() {
     const modalForm = document.querySelector(".modal-form")
-    if (!modalForm) {
-        return
-    }
+    if (!modalForm) return
     modalForm.addEventListener('submit', async function(event) {
         event.preventDefault()
 
@@ -308,18 +326,18 @@ export function postFormData() {
                 if (response.ok) {
                     // Retrieve the response data
                     const responseData = await response.json()
-                    // modal.close()
                     console.log("Nouveau project envoyé:", responseData)
 
-                    const newFigure = createReusableGallery(responseData.imageUrl, responseData.id)
+                    const newModalFigure = createReusableGallery(responseData.imageUrl, responseData.id, responseData.title)
+                    addTrashIcon(newModalFigure)
+                    modalGallery.appendChild(newModalFigure)
+                    removeTitle()
+
+                    const newFigure = createReusableGallery(responseData.imageUrl, responseData.id, responseData.title)
                     gallery.appendChild(newFigure)
 
                     // Reset modal view 2 and close modal
-                    // Reset the input form
-                    fileInput.value = ''
-                    titleInput.value = ''
-                    categoryInput.value = ''
-                    displayView2()
+                    resetForm()
                     modal.close()
                 } else {
                     throw new Error("Erreur dans les données")
@@ -330,4 +348,15 @@ export function postFormData() {
         }       
     })
 }
-postFormData()
+
+function resetForm() {
+    const preview = document.querySelector(".preview")
+    preview.innerHTML = ""
+    preview.style.display = "none"
+                    
+    const previewInput = document.querySelector(".preview-input")
+    previewInput.classList.remove("opacity")
+
+    titleInput.value = ''
+    categoryInput.value = ''
+}
