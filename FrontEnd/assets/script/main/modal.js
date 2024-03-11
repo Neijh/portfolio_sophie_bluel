@@ -265,18 +265,17 @@ export function updateSubmitButton() {
 
 function isModalFormValid() {
     // Check if there is a file in the preview
-    const previewImage = document.querySelector('.preview img');
+    const previewImage = document.querySelector('.preview img')
     if (!previewImage) return false; // No file selected
 
     // Check if the title is valid
     const regex = /^[a-zA-Z0-9\s\-_.,:;“”"'()!?&]+$/
     const titleValue = titleInput.value.trim()
-    const validTitle = regex.test(titleValue);
+    const validTitle = regex.test(titleValue)
 
     // Check if a category is selected
-    const validCategory = categoryInput.value !== "";
-
-    return validTitle && validCategory; // No need to validate file as it's already in the preview
+    const validCategory = categoryInput.value !== ""
+    return validTitle && validCategory // No need to validate file as it's already in the preview
 }
 
 // Attach event listeners for input event on title and category input fields
